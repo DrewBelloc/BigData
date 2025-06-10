@@ -1,9 +1,11 @@
-from rich.console import Console, Group
+from rich.console import Console
 from rich.panel import Panel
 from rich.prompt import Prompt
 from rich import pretty
 from convert import toNumber
 from ml import train
+from time import time
+
 pretty.install()
 ["Rich and pretty", True]
 console = Console()
@@ -41,8 +43,10 @@ def main():
                     console.log("[bold red]Por favor insira um numero válido")
                 if not error:
                     with console.status("Calculando...", spinner="aesthetic"):
+                        start = time()
                         valor, precisao = train(2,entrada1,entrada2,entrada3,entrada4)
-                        console.rule(f"[bold blue]Precisão de {precisao*100}%", style="magenta")
+                        end = time()
+                        console.print(Panel(f"[bold blue]Tempo de execução: {(end-start)*10**3:.03}ms\nPrecisão de {precisao*100}%", style="magenta", title="[red]Desempenho"))
                         valor = str(valor)
                         valor = valor.replace("[","")
                         valor = valor.replace("]","")
@@ -52,13 +56,18 @@ def main():
 
         elif option == "2":
             with console.status("Calculando...", spinner="aesthetic"):
+                start = time()
                 precisao = train(1)
-                console.print(Panel(f"{precisao*100}%", title="[red]Precisão", style="magenta"))
+                end = time()
+                console.print(Panel(f"[blue]Tempo de execução: {(end-start)*10**3:.03}ms\n{precisao*100}%", title="[red]Desempenho", style="magenta"))
         elif option == "3":
+            with console.status("Calculando...", spinner="aesthetic"):
+                precisao = train(3)
+        elif option == "4":
             run == False
             break
         console.rule("[bold blue]Menu Principal", style="magenta")
-        console.print(Panel("[bold cyan]1[/]: [color(12)]Checar Taxa de entrega[/]\n[bold cyan]2[/]: [color(12)]Mostrar Desempenho[/]\n[bold cyan]3[/]: [color(12)]Sair", border_style="magenta"))
+        console.print(Panel("[bold cyan]1[/]: [color(12)]Checar Taxa de entrega[/]\n[bold cyan]2[/]: [color(12)]Mostrar Desempenho[/]\n[bold cyan]3[/]: [color(12)]Mostrar Arvore de Decisão\n[bold cyan]4[/]: [color(12)]Sair", border_style="magenta"))
         option = Prompt.ask("menu")
 
 if __name__=="__main__":

@@ -2,6 +2,7 @@ import pandas as pd
 from sklearn import tree
 from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
+import matplotlib.pyplot as plt
 
 def train(option, entrada1=0, entrada2=0, entrada3=0, entrada4=0):
     # Ler o banco de dados
@@ -32,3 +33,11 @@ def train(option, entrada1=0, entrada2=0, entrada3=0, entrada4=0):
                 ["rua","numero","lote","quadra"])
         y_prediction = clf.predict(df_para_classificar)
         return y_prediction, precisao # retorna a previsão para o programa principal e a precisão do modelo
+
+    elif option == 3: # Mostrar arvore de decisão
+        data_feature_names = ['sepal length', 'sepal width', 'petal length', 'petal width']
+        data_class_names = ['Iris-setosa','Iris-versicolor', 'Iris-virginica']
+        tree.plot_tree(clf, feature_names = data_feature_names,
+                       class_names= data_class_names, filled = True)
+        plt.show()
+        
